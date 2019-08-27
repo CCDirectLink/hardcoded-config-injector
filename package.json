@@ -1,0 +1,6 @@
+{
+	"name": "hardcoded-config-injector",
+	"version": "0.5.0",
+	"plugin": "plugin.js",
+	"ccmodDependencies": {}
+}
