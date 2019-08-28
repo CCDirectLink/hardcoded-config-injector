@@ -35,4 +35,5 @@ Here is a sample `default-tracks.json`:
             "volume": 1
         }
     }
-}```
+}
+```
