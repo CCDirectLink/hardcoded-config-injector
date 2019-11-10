@@ -1,4 +1,5 @@
 import {joinGenerator} from './util.js';
+import KeyBinderInject from './injects/keybinder.js';
 
 export default class AssetsFix extends Plugin {
 	constructor(mod) {
@@ -8,6 +9,9 @@ export default class AssetsFix extends Plugin {
 			bgm: {
 				trackList: [],
 				defaultTracks: []
+			},
+			controls: {
+				// { "name" : {key1: ig.KEY[value], key2: ig.KEY[value] || } 
 			}
 		};
 	}
@@ -19,7 +23,7 @@ export default class AssetsFix extends Plugin {
 		for (const mod of window.activeMods) {
 			const join = joinGenerator(mod);
 			
-			// check if 
+			
 			const pathToTrackList = join('config', 'bgm', 'track-list.json');
 			if (fs.existsSync(pathToTrackList)) {
 				try {
@@ -36,6 +40,17 @@ export default class AssetsFix extends Plugin {
 					this.config.bgm.defaultTracks.push(defaultTrack);	
 				} catch (e) {}	
 			}
+
+			const pathToControls = join('config', 'options', 'controls.json');
+			if (fs.existsSync(pathToControls)) {
+				try {
+					const controls = JSON.parse(fs.readFileSync(pathToControls, 'utf8'));
+					const configControls = this.config.controls;
+					
+					Object.assign(configControls, controls);	
+				} catch (e) {}	
+			}
+			
 		}
 	}
 	
@@ -45,7 +60,25 @@ export default class AssetsFix extends Plugin {
 	prestart() {
 		console.log('In prestart');
 		
-		
+
+		const controls = this.config.controls;
+		const configControls = {};
+
+		for (let key in controls) {
+			const actualKey = `keys-${key}`;
+			sc.OPTIONS_DEFINITION[actualKey] = {
+				type : "CONTROLS",
+				init: {
+					key1: ig.KEY[controls[key].key1],
+					key2: ig.KEY[controls[key].key2]
+				},
+				cat: sc.OPTION_CATEGORY.CONTROLS
+			};
+			
+			configControls[key] = actualKey;
+		}
+		KeyBinderInject(configControls);
+
 		this.config.bgm.trackList.forEach((track) => {
 			ig.merge(ig.BGM_TRACK_LIST, track);
 		});
@@ -53,5 +86,7 @@ export default class AssetsFix extends Plugin {
 		this.config.bgm.defaultTracks.forEach((defaultTrack) => {
 			ig.merge(ig.BGM_DEFAULT_TRACKS, defaultTrack);
 		});
+
+		
 	}
 }
