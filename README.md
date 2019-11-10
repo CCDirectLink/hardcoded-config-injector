@@ -1,6 +1,24 @@
 # hardcoded-config-injector
 The mod will look for a config folder in your root mod directory.
-Inside the config folder, you can have a `track-list.json` and `default-tracks.json`.
+The config file can have these folders:
+`bgm` - for music related configurations
+`options` - for options related configurations
+
+
+Inside the options folder, you can have a `controls.json` file:
+
+Here is a sample `controls.json`:
+```
+{
+	"key": {
+		"key1": "A",
+		"key2": "_0"
+	}
+}
+```
+
+
+Inside the bgm folder, you can have a `track-list.json` and `default-tracks.json`.
 
 Here is a sample `track-list.json`:
 ```
