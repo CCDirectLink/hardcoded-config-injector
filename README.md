@@ -19,7 +19,7 @@ Here is a sample `controls.json`:
 
 
 Inside the bgm folder, you can have a `track-list.json` and `default-tracks.json`.
-
+# Note: DO NOT INCLUDE 'assets/' IN THE INTRO OR PATH
 Here is a sample `track-list.json`:
 ```
 {
