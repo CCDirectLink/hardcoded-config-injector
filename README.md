@@ -1,4 +1,8 @@
 # hardcoded-config-injector
+
+# Note: No longer maintained. 
+
+
 The mod will look for a config folder in your root mod directory.
 The config file can have these folders:
 `bgm` - for music related configurations
